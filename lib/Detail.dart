@@ -23,16 +23,15 @@ Widget textView(String name) {
 }
 
 class _DetailState extends State<Detail> {
-  bool isEnglish = true;
-  bool isRusia = true;
-  bool isFrancis = true;
-
-  bool isEnglishdesc = true;
-  bool isRusiadesc = true;
-  bool isFrancisdesc = true;
-
-  // Initial Selected Value
   String dropdownvalue = 'English';
+  String? description;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    description = widget.teams.strDescriptionEN;
+  }
 
   // List of items in our dropdown menu
   var items = [
@@ -86,9 +85,9 @@ class _DetailState extends State<Detail> {
                       ),
                       color: Colors.white,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, top: 20, bottom: 20),
+                        padding: const EdgeInsets.all(20),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -104,58 +103,29 @@ class _DetailState extends State<Detail> {
                                       SizedBox(
                                         width: 200,
                                         child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 3),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    widget.teams.strTeam
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 22),
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                              widget.teams.strTeam.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22),
                                             ),
-                                            Row(
-                                              children: [
-                                                Text(widget.teams.strTeamShort
+                                            SizedBox(height: 3),
+                                            Text(widget.teams.strTeamShort
+                                                .toString()),
+                                            SizedBox(height: 3),
+                                            Text("IdTeam : " +
+                                                widget.teams.idTeam.toString()),
+                                            SizedBox(height: 3),
+                                            Text("Country : " +
+                                                widget.teams.strCountry
                                                     .toString()),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 3, bottom: 3),
-                                              child: Row(
-                                                children: [
-                                                  Text("IdTeam : " +
-                                                      widget.teams.idTeam
-                                                          .toString()),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text("Country : " +
-                                                    widget.teams.strCountry
-                                                        .toString()),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 3),
-                                              child: Row(
-                                                children: [
-                                                  Text("Year Formed : " +
-                                                      widget.teams.intFormedYear
-                                                          .toString()),
-                                                ],
-                                              ),
-                                            )
+                                            SizedBox(height: 3),
+                                            Text("Year Formed : " +
+                                                widget.teams.intFormedYear
+                                                    .toString())
                                           ],
                                         ),
                                       )
@@ -165,7 +135,8 @@ class _DetailState extends State<Detail> {
                               ],
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 5, bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 3),
                               child: Row(
                                 children: [
                                   Text(
@@ -174,13 +145,8 @@ class _DetailState extends State<Detail> {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   DropdownButton(
-                                    // Initial Value
                                     value: dropdownvalue,
-
-                                    // Down Arrow Icon
                                     icon: const Icon(Icons.keyboard_arrow_down),
-
-                                    // Array list of items
                                     items: items.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
@@ -190,24 +156,22 @@ class _DetailState extends State<Detail> {
                                         ),
                                       );
                                     }).toList(),
-                                    // After selecting the desired option,it will
-                                    // change button value to selected value
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         // Changing the value of dropdown
                                         dropdownvalue = newValue!;
                                         if (dropdownvalue == "English") {
-                                          isEnglishdesc = true;
-                                          isRusiadesc = false;
-                                          isFrancisdesc = false;
+                                          description = widget
+                                                  .teams.strDescriptionEN ??
+                                              "No description for this language";
                                         } else if (dropdownvalue == "Rusia") {
-                                          isEnglishdesc = false;
-                                          isRusiadesc = true;
-                                          isFrancisdesc = false;
+                                          description = widget
+                                                  .teams.strDescriptionRU ??
+                                              "No description for this language";
                                         } else if (dropdownvalue == "Francis") {
-                                          isFrancisdesc = true;
-                                          isEnglishdesc = false;
-                                          isRusiadesc = false;
+                                          description = widget
+                                                  .teams.strDescriptionFR ??
+                                              "No description for this language";
                                         }
                                       });
                                     },
@@ -215,39 +179,22 @@ class _DetailState extends State<Detail> {
                                 ],
                               ),
                             ),
-                            Row(
-                              children: [
-                                isEnglish
-                                    ? Container(
-                                        width: 300,
-                                        child: ReadMoreText(
-                                          isEnglishdesc
-                                              ? widget.teams.strDescriptionEN
-                                                  .toString()
-                                              : isRusiadesc
-                                                  ? widget
-                                                      .teams.strDescriptionRU
-                                                      .toString()
-                                                  : isFrancis
-                                                      ? widget.teams
-                                                          .strDescriptionFR
-                                                          .toString()
-                                                      : "",
-                                          trimLines: 2,
-                                          trimCollapsedText: 'Show more',
-                                          trimExpandedText: 'Show less',
-                                          moreStyle: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blue),
-                                          lessStyle: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blue),
-                                        ))
-                                    : Container()
-                              ],
-                            )
+                            Container(
+                                width: 300,
+                                child: ReadMoreText(
+                                  description.toString(),
+                                  trimLines: 2,
+                                  trimCollapsedText: 'Show more',
+                                  trimExpandedText: 'Show less',
+                                  moreStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),
+                                  lessStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),
+                                ))
                           ],
                         ),
                       ),
@@ -284,28 +231,26 @@ class _DetailState extends State<Detail> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 5),
                         Container(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 5, top: 5),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Location : ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Container(
-                                      width: 235,
-                                      child: Text(widget
-                                          .teams.strStadiumLocation
-                                          .toString()),
-                                    )
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Location : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    width: 235,
+                                    child: Text(widget.teams.strStadiumLocation
+                                        .toString()),
+                                  )
+                                ],
                               ),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
                                   Text(
@@ -317,40 +262,29 @@ class _DetailState extends State<Detail> {
                                       .toString())
                                 ],
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 5, bottom: 5),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Description : ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
+                              const SizedBox(height: 5),
+                              Text(
+                                "Description : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Row(
-                                children: [
-                                  Container(
-                                      width: 300,
-                                      child: ReadMoreText(
-                                        widget.teams.strStadiumDescription
-                                            .toString(),
-                                        trimLines: 2,
-                                        trimCollapsedText: 'Show more',
-                                        trimExpandedText: 'Show less',
-                                        moreStyle: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blue),
-                                        lessStyle: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blue),
-                                      ))
-                                ],
-                              )
+                              const SizedBox(height: 5),
+                              Container(
+                                  width: 300,
+                                  child: ReadMoreText(
+                                    widget.teams.strStadiumDescription
+                                        .toString(),
+                                    trimLines: 2,
+                                    trimCollapsedText: 'Show more',
+                                    trimExpandedText: 'Show less',
+                                    moreStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue),
+                                    lessStyle: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue),
+                                  ))
                             ],
                           ),
                         )
@@ -366,14 +300,11 @@ class _DetailState extends State<Detail> {
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Sosial Media : ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Text(
+                          "Sosial Media : ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 16),
