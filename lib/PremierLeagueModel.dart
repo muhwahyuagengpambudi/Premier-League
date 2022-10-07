@@ -226,6 +226,27 @@ class Teams {
     strLocked = json['strLocked'];
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'idTeam': idTeam,
+      'strTeam': strTeam,
+      'Logo': strTeamBadge,
+      'League': strLeague,
+      'Banner': strTeamBanner,
+      'Stadium': strStadium,
+      'Stadium1': strStadiumThumb,
+      'Rusia': strDescriptionRU,
+      'English': strDescriptionEN,
+      'Francis': strDescriptionFR,
+      'TeamShort': strTeamShort,
+      'Country': strCountry,
+      'intFormedYear': intFormedYear,
+      'StadiumLocation': strStadiumLocation,
+      'StadiumCapacit': intStadiumCapacity,
+      'StadiumDescription': strStadiumDescription
+    };
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['idTeam'] = this.idTeam;

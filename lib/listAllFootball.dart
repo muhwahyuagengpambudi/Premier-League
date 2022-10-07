@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_6/Detail.dart';
+import 'package:flutter_application_6/Favorite.dart';
 import 'package:flutter_application_6/PremierLeagueModel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -46,6 +47,21 @@ class _ListAllFootbalState extends State<ListAllFootbal> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 20, 70, 206),
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                //memanggil fungsi diatas
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FavoritePremier(),
+                    ));
+              },
+              icon: Icon(
+                Icons.favorite,
+                color: Colors.white,
+              )),
+        ],
         centerTitle: true,
         title: Text(
           'Premier League',

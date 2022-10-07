@@ -38,6 +38,8 @@ dependencies:
   flutter_image_slideshow: ^0.1.4
   carousel_slider: ^4.1.1
   readmore: ^2.2.0
+  sqflite:
+  path_provider:
 
 dev_dependencies:
   flutter_test:
